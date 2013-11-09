@@ -1,0 +1,10 @@
+======================================================================
+PROJECT OVERVIEW
+======================================================================
+
+Name:           Underwear MVC PHP Framework
+Date started:   November 2, 2013
+Author(s):      eurekasfray
+
+Goals:          To develop a simple a MVC-inspired framework
+                
