@@ -29,10 +29,12 @@ class Kernel
     {
         // Handle the request
         $uri = $request->getUri();
-      //$routeTable = \Underwear\Component\Loader::load(APP_CONFIG_DIRECTORY . DIRECTORY_SEPARATOR . "routing" . FILE_EXTENSION);
+        //$routeTable = \Underwear\Component\Loader::load(APP_CONFIG_DIRECTORY . DIRECTORY_SEPARATOR . "routing" . FILE_EXTENSION);
+
         $routeTable = new \Underwear\Component\RouteTable();
-        $routeTable->add("testpage", new \Underwear\Component\Route("/test","Homepage","show","GET"));
-        $routeTable->add("homepage", new \Underwear\Component\Route("/","Homepage","show","GET"));
+        $routeTable->add("testpage", new \Underwear\Component\Route("/user/{name}","Homepage","show","GET"));
+        $routeTable->add("test2", new \Underwear\Component\Route("/","Homepage","showPage","GET"));
+
         $router = new \Underwear\Component\Router();
         $router->register($routeTable);
         $controller = $router->getController($uri);
@@ -53,7 +55,8 @@ class Kernel
             \Underwear\Component\Loader::load(APPLICATION_DIRECTORY . DIRECTORY_SEPARATOR . "controller" . DIRECTORY_SEPARATOR . $controller["controller"] . "Controller" . FILE_EXTENSION);
             $fcontroller = $controller["controller"] . "Controller";
             $fmethod = $controller["action"];
-            $response = call_user_func_array(array($fcontroller,$fmethod),array("Underwear"));
+            $fargs = $controller["args"];
+            $response = call_user_func_array(array($fcontroller,$fmethod),$fargs);
             return $response;
         }
     }
