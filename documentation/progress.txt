@@ -1,0 +1,9 @@
+PROGRESS
+
+Before 2013-10-13:
+
+    -- Developed the framework
+
+2013-10-13:
+
+    -- Solved routing problem. The router now works!
