@@ -2,9 +2,10 @@
 
 use Underwear\Component;
 
-$table = new \Underwear\Component\RouteTable();
-$table->add("homepage", new \Underwear\Component\Route("/","Homepage","show","GET"));
+$routeTable = new \Underwear\Component\RouteTable();
+$routeTable->add("testpage", new \Underwear\Component\Route("/user/{name}","Homepage","show","GET"));
+$routeTable->add("testpage", new \Underwear\Component\Route("/","Homepage","showPage","GET"));
 
-return $table;
+return $routeTable;
 
 ?>
