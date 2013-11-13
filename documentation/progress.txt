@@ -1,9 +1,16 @@
 PROGRESS
 
-Before 2013-10-13:
+Before 2013-11-02:
+    
+    -- Studied Symfony and Negative 11 frameworkds
 
-    -- Developed the framework
+Between 2013-11-02 and 2013-11-13:
 
-2013-10-13:
+    -- Developed majority of the framework
+    -- Stumbled upon problem to develop router that maps URI to a controller
+
+2013-11-13:
 
     -- Solved routing problem. The router now works!
+    
+       The problem was that I didn't know how to design a router that allows the placement of arguments anywhere within the URI. The router that allows this placement of arguments anywhere within the URI will not be developed just yet. So as an alternative, the URI shall be composed into parts where parts are separated by the forward slashes. Example: "/post/1234", where "post" and "1234" are separate parts. With this format, collecting arguments shall be a much easier task. And so too shall be the job of matching URIs to route paths.
