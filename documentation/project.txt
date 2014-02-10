@@ -2,7 +2,8 @@
 PROJECT OVERVIEW
 ======================================================================
 
-Name:           Underwear MVC PHP Framework
+Name:           Underwear
+Description:    A PHP MVC Framework
 Date started:   November 2, 2013
 Author(s):      eurekasfray
 
