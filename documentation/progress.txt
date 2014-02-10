@@ -2,15 +2,31 @@ PROGRESS
 
 Before 2013-11-02:
     
-    -- Studied Symfony and Negative 11 frameworkds
+    -- Studied Symfony and Negative 11 frameworks
 
 Between 2013-11-02 and 2013-11-13:
 
-    -- Developed majority of the framework
-    -- Stumbled upon problem to develop router that maps URI to a controller
+    -- Developed majority of the framework.
+    -- Stumbled upon problem to develop router that maps URI to a controller.
 
 2013-11-13:
 
     -- Solved routing problem. The router now works!
     
        The problem was that I didn't know how to design a router that allows the placement of arguments anywhere within the URI. The router that allows this placement of arguments anywhere within the URI will not be developed just yet. So as an alternative, the URI shall be composed into parts where parts are separated by the forward slashes. Example: "/post/1234", where "post" and "1234" are separate parts. With this format, collecting arguments shall be a much easier task. And so too shall be the job of matching URIs to route paths.
+       
+2013-11-16:
+
+    -- I'm having another problem that is related to routing. How do I load the app's routing config?
+    
+2014-02-10:
+
+    -- I've resumed the development of the framework. This project just way to much fun to stop! And not only that, I also need the framework for a website idea that I have. The framework will be used to develop a website which will allow users to announce things they've made. I need the framework for its MVC pattern which will make development and maintenance of the site much easier.
+    -- Solved app-routing-config problem: Initially I had the `routing.php` file in `app/config` directory included and the value of the include be assigned to a value, like this: `$routeTable = include("routing.php")`. However, turns out that I may have been doing it wrong all along, which may be the reason why it never worked. In fact, the include construct is very dynamic. I had needed to not use the parentheses but rather like this: `$routeTable = include "routing.php"`. So, now the app-routing config works, and I have broken through a brickwall with this solution.
+    -- Next, I need to develop the View components.
+    -- The render method of the View works! The View component is very minimal and only includes the method to render a template, which I stole from the Symfony tutorial on "Symfony vs Flat PHP".
+    -- Problem: The request URI is taken and fed to the kernel regardless if the URI is a file or directory. Should that be? Also: Because the URI is taken regardless of if its a directory or file, how will images be captured by the templates in the template directory?
+    -- Okay ... again ... I've been doing it all wrong! Files can now be viewed when entered as the URI. So, a file "127.0.0.1/image.png" will be displayed.
+    -- My next plan is to allow for query strings to be appended to requests.
+    -- Added a default entry into the route table. The default route will be called if no route was found during the searching of the route table. To curve any error, because the default route is optional, if the default route is not found then nothing is displayed; a 404 response is returned with null content.
+    -- Made sure to match the selected METHOD to the right controller. So if a route is created for a POST method, then that route is only dispatched if the request method is POST.
