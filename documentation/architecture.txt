@@ -1,0 +1,45 @@
+How browsers and servers converse:
+
+-----------------------------------------------------------------------------------------------------------
+
++---------+            +---------+
+| BROWSER |            | SERVER! |
++---------+            +---------+
+     |                      |
+     |------ Request ------>|
+     |                      | Server processes request and returns appropriate response
+     |<----- Response ------|
+     |                      |
++---------+            +---------+
+| BROWSER |            | SERVER! |
++---------+            +---------+
+
+-----------------------------------------------------------------------------------------------------------
+
+The browser sends a request to the server. The server receives the response, and processes the request and returns an appropriate response.
+
+Underwear builds upon this architecture.
+
+-----------------------------------------------------------------------------------------------------------
+
+                                            UNDERWEAR ARCHITECTURE
+
+                +------------------+     +-----------------------------+      .----------.
+   REQUEST ---->| Front Controller |---->|            Kernel           |---->| Controller |----> RESPONSE
+                +------------------+     +-----------------------------+      `----------'
+                                                |               ^
+                                                v               |
+                                         +-------------+  +------------+
+                                         | Request URI |  | Controller |
+                                         +-------------+  +------------+
+                                                |               ^
+                                                v               |
+                                         +-----------------------------+
+                                         |            Router           |
+                                         +-----------------------------+
+
+-----------------------------------------------------------------------------------------------------------
+
+The architecture of Underwear is quite simple. Underwear framework system consists of three important subsystems that all allow the coordinated working of the handling of a request and the production of a response. The aforementioned subsystems include the following: the front controller, the kernel, and the router.
+
+Because Underwear is involved with web development, the front-controller pattern was intertwined with the model-view-controller pattern. The front controller pattern is where there a single entry-point that handles request. The front controller gets the request and passes the it to the kernel, where the request is then handled. The handling of the request involves searching the route table of the router with the request URI as the key. The search involves matching the given request URI to a route. Once there is a match, the controller associated with the route is collected and returned to the kernel. The kernel contains a dispatcher that calls the controller for it to be executed. The controller is then responsible for creating a response.
