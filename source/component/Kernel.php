@@ -23,24 +23,25 @@ class Kernel
         // register the routers in the router table
         
         $this->booted = true;
+        
     }
+    
+    // Handle The Request
     
     public function handle(\Underwear\Component\Request $request)
     {
         // Handle the request
         $uri = $request->getUri();
-        //$routeTable = \Underwear\Component\Loader::load(APP_CONFIG_DIRECTORY . DIRECTORY_SEPARATOR . "routing" . FILE_EXTENSION);
-
-        $routeTable = new \Underwear\Component\RouteTable();
-        $routeTable->add("testpage", new \Underwear\Component\Route("/user/{name}","Homepage","show","GET"));
-        $routeTable->add("test2", new \Underwear\Component\Route("/","Homepage","showPage","GET"));
-
+        $routeTable = (include APP_CONFIG_DIRECTORY . DIRECTORY_SEPARATOR . 'routing' . FILE_EXTENSION);
         $router = new \Underwear\Component\Router();
         $router->register($routeTable);
         $controller = $router->getController($uri);
         $response = $this->dispatch($controller);
         return $response;
+        
     }
+    
+    // Dispatch The Controller
 
     private function dispatch($controller)
     {
@@ -48,18 +49,21 @@ class Kernel
         // If a controller isn't found, this should return a "404 Not Found" response.
         
         if ($controller == false) {
-            $response = new \Underwear\Component\Response("<h1>404 Not Found</h1>", \Underwear\Component\Response::HTTP_NOT_FOUND);
+            $response = new \Underwear\Component\Response("",\Underwear\Component\Response::HTTP_NOT_FOUND);
             return $response;
         }
         else {
-            \Underwear\Component\Loader::load(APPLICATION_DIRECTORY . DIRECTORY_SEPARATOR . "controller" . DIRECTORY_SEPARATOR . $controller["controller"] . "Controller" . FILE_EXTENSION);
-            $fcontroller = $controller["controller"] . "Controller";
+            \Underwear\Component\Loader::load( APP_CONTROLLER_DIRECTORY . DIRECTORY_SEPARATOR . $controller["controller"] . FILE_EXTENSION );
+            $fcontroller = $controller["controller"];
             $fmethod = $controller["action"];
             $fargs = $controller["args"];
             $response = call_user_func_array(array($fcontroller,$fmethod),$fargs);
             return $response;
         }
+        
     }
+    
+    // Shutdown The Kernel
     
     public function shutdown()
     {
@@ -69,6 +73,7 @@ class Kernel
         if ($this->booted) {
             $this->booted = false;
         }
+        
     }
 
 }
