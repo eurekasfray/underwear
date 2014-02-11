@@ -4,8 +4,7 @@ namespace Underwear\Component;
 
 class Router
 {
-
-    // A router registers to only one table.
+    // A router may only be registered to one table.
     
     private $registry;
     
@@ -21,32 +20,56 @@ class Router
     }
     
     public function search($uri)
-    {
-        // TODO
-        // - Make sure to match the selected METHOD to the right controller
-        
-        $found = false;
+    {        
+        // Get The Route Table
         
         $registry = $this->registry;
         $routeTable = $registry->getTable();
-        $args = array();
+        
+        // Find default route first, in case the given URL is not found
+        
+        $foundDefaultRoute = false;
         foreach ($routeTable as $name=>$route) {
-            // The complex matching of URI and route path is done here. Replace this simple one:
-            if ($this->match($uri, $route->getPath())) {
-                $foundRoute = $route;
-                $args = $this->getArgs($uri, $route->getPath());
-                $found = true;
+            if (strtolower($name) == "default") {
+                $defaultRoute = $route;
+                $foundDefaultRoute = true;
                 break;
             }
         }
+        
+        // Find route match for given URL
+        
+        $found = false;
+        $args = array();
+        foreach ($routeTable as $name=>$route) {
+            if ($this->match($uri, $route->getPath())) {
+                if (strtolower($route->getHttpMethod()) == strtolower(\Underwear\Component\Request::getMethod())) {
+                    $foundRoute = $route;
+                    $args = $this->getArgs($uri, $route->getPath());
+                    $found = true;
+                    break;
+                }
+            }
+        }
+        
+        // Return found route. However, if no route is found, then return default route if any
         
         if ($found) {
             $controller = array ("controller"=>$foundRoute->getController(), "action"=>$foundRoute->getAction(), "args"=>$args);
             return $controller;
         }
         else {
-            return false;
+        
+            if ($foundDefaultRoute) {
+                $controller = array ("controller"=>$defaultRoute->getController(), "action"=>$defaultRoute->getAction(), "args"=>array());
+            }
+            else {
+                $controller = false;
+            }
+            
+            return $controller;
         }
+        
     }
     
     private function match($uri,$path)
@@ -55,11 +78,11 @@ class Router
         // - When comparing parts, remember to consider case-sensitivity for those routes that are case-sensitive and those that are not
         // - What about query strings? Are are those to be handled? Should they be truncated from from the URI or should they be included? I think they should be truncated. The query strings start at the occurrence of the first question mark. But this still bothers me though. -- Okay turns out that query strings are handled by the server as my attempt to truncate the query strings from the uri in the uri-to-path match method caused an upset in the system, where regardless of the uri, the homepage was displayed, with the exception of the uri from which the query strings were truncated
         // ISSUES
-        // - When the programmer types a path and say they type "/post/{id}{slug}", an error will come up to say that that is no match, because "{id/{slug}" is not a valid part. The problem is that an error will be returned to say that there is no match, even though user requested uri "/post/1234" is actually valid but the system will return a no-match error (not found), when actually the problem is not that the URI does not exist; the problem is that the programmer made an error in typing an syntactically incorrect path. So, question is, how do I handle syntax errors in paths properly? Do I use exceptions?
+        // - When the programmer types a path and say they type "/post/{id}{slug}", an error will come up to say that that is no match, because "{id}{slug}" is not a valid part. The problem is that an error will be returned to say that there is no match, even though user requested uri "/post/1234" is actually valid but the system will return a no-match error (not found), when actually the problem is not that the URI does not exist; the problem is that the programmer made an error in typing a syntactically incorrect path. So, question is, how do I handle syntax errors in paths properly? Do I use exceptions?
         
         // Clean up the uri and path
-        $uri = trim($uri," \t\n\r\0\x0B/");
-        $path = trim($path," \t\n\r\0\x0B/");
+        $uri = trim($uri,"\x20\t\n\r\0\x0B/");
+        $path = trim($path,"\x20\t\n\r\0\x0B/");
         
         // Divide the uri and path into parts
         $uriParts = explode("/", $uri);
@@ -92,8 +115,8 @@ class Router
     
     private function getArgs($uri,$path)
     {
-        $uri = trim($uri," \t\n\r\0\x0B/");
-        $path = trim($path," \t\n\r\0\x0B/");
+        $uri = trim($uri,"\x20\t\n\r\0\x0B/");
+        $path = trim($path,"\x20\t\n\r\0\x0B/");
         
         $uriParts = explode("/", $uri);
         $pathParts = explode("/", $path);
@@ -111,9 +134,9 @@ class Router
 
     private function isPlaceholder($subject)
     {
-        // A placeholder has the syntax a PHP identifier: It can only contain letters, numbers and an underscore, and must not begin with a number
+        // A placeholder has the syntax of a PHP identifier: It can only contain letters, numbers and an underscore, and must not begin with a number
         
-        if (preg_match("/^{[A-Za-z_][A-Z-a-z0-9_]*}$/", $subject)) {
+        if (preg_match("/^{[A-Za-z_][A-Za-z0-9_]*}$/", $subject)) {
             return true;
         }
         else {
@@ -128,7 +151,7 @@ class Router
         //
         // Example:
         //     extractIdentifier("{name}")
-        //     Outputs: "name";
+        //     outputs: "name";
     
         $start = 1;                                 // we don't want the first either!
         $length = strlen($placeholder) - 2;         // neither do we want the last curly bracket
