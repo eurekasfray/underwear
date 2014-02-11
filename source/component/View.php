@@ -5,7 +5,7 @@ namespace Underwear\Component;
 class View
 {
 
-    // A question to myslef: What is a view? A view is a part of the presentation logic.
+    // A question to myself: What is a view? A view is a part of the presentation logic.
     // -- Render templates
     // -- Generates its own object states
     // -- Assign templates
@@ -20,11 +20,15 @@ class View
     
     public function __set($name, $value)
     {
+        // Function not ready for use
+        
         $this->_data[$name] = $value;
     }
     
     public function __get($name)
     {
+        // Function not ready for use
+        
         if (isset($this->_data[$name])) {
             return $this->_data[$name];
         }
@@ -32,11 +36,20 @@ class View
     
     public function template($file)
     {
+        // Function not ready for use
     }
     
-    public function render()
+    public function render($file, array $args)
     {
-        // this should return a string because the string will be passsed on to the Response
+        // This method should return a string because its return will be passed on to the Response as content
+        // The rendering process does not involve displaying code, but instead means to simply render the template with its fill-in information.
+        
+        extract($args);
+        ob_start();
+        require(APP_TEMPLATE_DIRECTORY . DIRECTORY_SEPARATOR . $file);
+        $html = ob_get_clean();
+        
+        return $html;
     }
 
 }
