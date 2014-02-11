@@ -10,7 +10,6 @@ class Request
 
     public static function compose()
     {
-        
         $server = new \Underwear\Component\ServerGlobals();
         $request = new Request();
         $request->requestLine["method"] = $server->server["REQUEST_METHOD"];
@@ -55,8 +54,10 @@ class Request
         
     }
     
-    public function getMethod()
+    public static function getMethod()
     {
+        $server = new \Underwear\Component\ServerGlobals();
+        return $server->server["REQUEST_METHOD"];
     }
     
     public function getUri()
