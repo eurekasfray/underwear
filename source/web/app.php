@@ -1,6 +1,6 @@
 <?php
 
-// Perfect, not need to be change!
+// Perfect; needs not any change.
 
 define ("ENVIRONMENT_PATH", realpath(dirname("..\..")));
 

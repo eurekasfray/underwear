@@ -152,6 +152,7 @@ class Response
     
     public function sendHeaders()
     {
+        // Have headers already been sent?
         if (headers_sent()) {
             return;
         }

@@ -5,7 +5,7 @@ namespace Underwear\Component;
 class ServerGlobals
 {
 
-    // This is in attemtps to isolate the app from globals
+    // This is in attempts to isolate the app from globals
 
     public static $server;
     
