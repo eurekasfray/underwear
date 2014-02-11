@@ -13,6 +13,3 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 # Rewrite any other request to the font controller
 RewriteRule .* app.php/$0 [PT,L]
-
-# Error
-ErrorDocument 404 /error404.php
