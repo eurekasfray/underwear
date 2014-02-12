@@ -4,6 +4,7 @@ TODO
 -- rename $controller to something else; im talking about the $controller variable name, the one that is returned by the router. rename it because it's name is confusing when used along with what is an actual controller.
 -- Find out how 404 errors are handled. Apparently, errors are handled by the framework
 -- What about an error handler that handles errors like 404? I think I need an error handler to handle that sort of stuff. I also need an error controller than prepares a text and template and renders the error page.
+-- System Exception: How does the system report errors? Upon an error, the error is reported via a response. So in essence the system hijacks the response for which the request asked with its own 500-internal-error response. I believe that all system errors must be caught before the server has a chance to responds to the browser's request. This way, system response will take precedence over the server's response to the browser's request.
 
 DONE
 
