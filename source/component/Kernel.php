@@ -9,7 +9,8 @@ class Kernel
     
     const NAME = "";
     const VERSION_MAJOR = "0";
-    const VERSION_MINOR = "1"; 
+    const VERSION_MINOR = "1";
+    const BUILD = "";
     const COMMIT = "";
     
     public function __construct()
