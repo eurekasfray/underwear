@@ -42,7 +42,7 @@ class Router
         $found = false;
         $args = array();
         foreach ($routeTable as $name=>$route) {
-            if ($this->match($uri, $route->getPath())) {
+            if ( $this->match($uri, $route->getPath(), $route->getCaseSensitivity()) ) {
                 if (strtolower($route->getHttpMethod()) == strtolower(\Underwear\Component\Request::getMethod())) {
                     $foundRoute = $route;
                     $args = $this->getArgs($uri, $route->getPath());
@@ -72,7 +72,7 @@ class Router
         
     }
     
-    private function match($uri,$path)
+    private function match($uri,$path,$caseSensitive)
     {
         // TODO
         // - When comparing parts, remember to consider case-sensitivity for those routes that are case-sensitive and those that are not
@@ -81,8 +81,8 @@ class Router
         // - When the programmer types a path and say they type "/post/{id}{slug}", an error will come up to say that that is no match, because "{id}{slug}" is not a valid part. The problem is that an error will be returned to say that there is no match, even though user requested uri "/post/1234" is actually valid but the system will return a no-match error (not found), when actually the problem is not that the URI does not exist; the problem is that the programmer made an error in typing a syntactically incorrect path. So, question is, how do I handle syntax errors in paths properly? Do I use exceptions?
         
         // Clean up the uri and path
-        $uri = trim($uri,"\x20\t\n\r\0\x0B/");
-        $path = trim($path,"\x20\t\n\r\0\x0B/");
+        $uri = \Underwear\Component\Helper::trimWhitespace($uri);
+        $path = \Underwear\Component\Helper::trimWhitespace($path);
         
         // Divide the uri and path into parts
         $uriParts = explode("/", $uri);
@@ -96,12 +96,24 @@ class Router
         // Match each corresponding part for the uri and path
         $error = false;
         foreach ($pathParts as $key=>$value) {
-            if ($this->isPlaceholder($value) || ($value == $uriParts[$key])) {
-                continue;
+        
+            if (!$caseSensitive) {
+                if ($this->isPlaceholder(\Underwear\Component\Helper::trimWhitespace($value)) || (strtolower($value) == strtolower($uriParts[$key]))) {
+                    continue;
+                }
+                else {
+                    $error = true;
+                    break;
+                }
             }
             else {
-                $error = true;
-                break;
+                if ($this->isPlaceholder(\Underwear\Component\Helper::trimWhitespace($value)) || ($value == $uriParts[$key])) {
+                    continue;
+                }
+                else {
+                    $error = true;
+                    break;
+                }
             }
         }
         
@@ -115,14 +127,15 @@ class Router
     
     private function getArgs($uri,$path)
     {
-        $uri = trim($uri,"\x20\t\n\r\0\x0B/");
-        $path = trim($path,"\x20\t\n\r\0\x0B/");
+        $uri = \Underwear\Component\Helper::trimWhitespace($uri);
+        $path = \Underwear\Component\Helper::trimWhitespace($path);
         
         $uriParts = explode("/", $uri);
         $pathParts = explode("/", $path);
         
         $args = array();
         foreach ($pathParts as $key=>$value) {
+            $value = \Underwear\Component\Helper::trimWhitespace($value);
             if ($this->isPlaceholder($value)) {
                 $id = $this->extractIdentifier($value);
                 $args[$id] = $uriParts[$key];

@@ -13,4 +13,8 @@ define ("WEB_DIRECTORY", ENVIRONMENT_PATH . DIRECTORY_SEPARATOR . "web");
 
 define ("FILE_EXTENSION", ".php");
 
+// Route Case Sensitivity
+
+define ("CASE_SENSITIVE", true);
+define ("CASE_INSENSITIVE", false);
 ?>
