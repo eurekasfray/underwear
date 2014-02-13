@@ -1,5 +1,16 @@
-Underwear is a prototype of an MVC framework. Created for me to study and play with an MVC-type framework, I began developing the framework after a skimmed-through study of how the Symfony and Negative(-11) frameworks operate. Underwear was designed to be experimental and not production-intended being that I know very little about actual framework design. So, heed my warning if you plan otherwise.
+Underwear is a prototype of an MVC framework. Created for me to study 
+and play with an MVC-type framework, I began developing the framework 
+after a skimmed-through study of how the Symfony and Negative(-11) 
+frameworks operate. Underwear was designed to be experimental and 
+not production-intended being that I know very little about actual 
+framework design. So, heed my warning if you plan otherwise.
 
-I made sure to document the framework as best as I could so that it can later be improved. Learn more about Underwear in the Documentation folder. Underwear was not meant to be distributed---but sharing is caring---so I've shared the framework. But just in case you decide to use it (for whatever devious scheme compelled you) ... be ware of spelling errors, grammatical errors, typographical errors, ambiguity in the documentation, and the boogie man.
+I made sure to document the framework as best as I could so that it 
+can later be improved. Learn more about Underwear in the Documentation 
+folder. Underwear was not meant to be distributed---but sharing 
+is caring---so I've shared the framework. But just in case you decide 
+to use it (for whatever devious scheme compelled you) ... be ware of 
+spelling errors, grammatical errors, typographical errors, ambiguity 
+in the documentation, and the boogie man.
 
 Enjoy!
