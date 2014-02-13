@@ -16,8 +16,9 @@ $bootstrap->loadServices();
 
 $kernel = new \Underwear\Component\Kernel();
 $kernel->boot();
-$request = \Underwear\Component\Request::compose();
-$response = $kernel->handle($request);
+$request = new \Underwear\Component\Request();
+$abstractRequest = $request->compose();
+$response = $kernel->handle($abstractRequest);
 $response->send();
 $kernel->shutdown();
 

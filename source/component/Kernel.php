@@ -29,10 +29,10 @@ class Kernel
     
     // Handle The Request
     
-    public function handle(\Underwear\Component\Request $request)
+    public function handle(\Underwear\Component\AbstractRequest $abstractRequest)
     {
         // Handle the request
-        $uri = $request->getUri();
+        $uri = $abstractRequest->getUri();
         $routeTable = (include APP_CONFIG_DIRECTORY . DIRECTORY_SEPARATOR . 'routing' . FILE_EXTENSION);
         $router = new \Underwear\Component\Router();
         $router->register($routeTable);
