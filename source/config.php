@@ -17,4 +17,9 @@ define ("FILE_EXTENSION", ".php");
 
 define ("CASE_SENSITIVE", true);
 define ("CASE_INSENSITIVE", false);
+
+// Routing Configuration
+
+define ("DEFAULT_ROUTE_NAME", "default");
+
 ?>
