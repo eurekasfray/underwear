@@ -21,6 +21,9 @@ class Router
     
     public function search($uri)
     {        
+        // Create Abstract Request Object
+        $abstractRequest = new \Underwear\Component\AbstractRequest();
+    
         // Get The Route Table
         
         $registry = $this->registry;
@@ -30,7 +33,7 @@ class Router
         
         $foundDefaultRoute = false;
         foreach ($routeTable as $name=>$route) {
-            if (strtolower($name) == "default") {
+            if (strtolower($name) == DEFAULT_ROUTE_NAME) {
                 $defaultRoute = $route;
                 $foundDefaultRoute = true;
                 break;
@@ -43,7 +46,7 @@ class Router
         $args = array();
         foreach ($routeTable as $name=>$route) {
             if ( $this->match($uri, $route->getPath(), $route->getCaseSensitivity()) ) {
-                if (strtolower($route->getHttpMethod()) == strtolower(\Underwear\Component\Request::getMethod())) {
+                if (strtolower($route->getMethod()) == strtolower($abtsractRequest->getMethod())) {
                     $foundRoute = $route;
                     $args = $this->getArgs($uri, $route->getPath());
                     $found = true;
