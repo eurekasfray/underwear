@@ -17,6 +17,8 @@ class Kernel
     {
         // do we do anything here?
     }
+    
+    // Boot The Kernel
 
     public function boot()
     {
