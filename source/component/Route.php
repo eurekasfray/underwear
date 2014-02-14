@@ -8,15 +8,15 @@ class Route
     private $path;
     private $controller;
     private $action;
-    private $httpMethod;
+    private $method;
     private $caseSensitivity;
 
-    public function __construct($path, $controller, $action, $httpMethod, $caseSensitivity = CASE_INSENSITIVE)
+    public function __construct($path, $controller, $action, $method, $caseSensitivity = CASE_INSENSITIVE)
     {
         $this->setPath($path);
         $this->setController($controller);
         $this->setAction($action);
-        $this->setHttpMethod($httpMethod);
+        $this->setmethod($method);
         $this->setCaseSensitivity($caseSensitivity);
     }
     
@@ -50,14 +50,14 @@ class Route
         return $this->action;
     }
     
-    private function setHttpMethod($httpMethod)
+    private function setMethod($method)
     {
-        $this->httpMethod = $httpMethod;
+        $this->method = $method;
     }
     
-    public function getHttpMethod()
+    public function getMethod()
     {
-        return $this->httpMethod;
+        return $this->method;
     }
 
     private function setCaseSensitivity($caseSensitivity)
