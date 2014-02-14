@@ -30,3 +30,4 @@ Between 2013-11-02 and 2013-11-13:
     -- My next plan is to allow for query strings to be appended to requests.
     -- Added a default entry into the route table. The default route will be called if no route was found during the searching of the route table. To curve any error, because the default route is optional, if the default route is not found then nothing is displayed; a 404 response is returned with null content.
     -- Made sure to match the selected METHOD to the right controller. So if a route is created for a POST method, then that route is only dispatched if the request method is POST.
+    -- The Request method compose() now creates an AbstractRequest object in which it composes only necessary HTTP request information (like request method, request URI, etc.). The framework will use the AbstractRequest object.
