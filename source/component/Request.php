@@ -22,7 +22,7 @@ class Request
         $this->normalizeUri();
     }
 
-    public function compose()
+    public function synthesize()
     {
         $abstractRequest = new \Underwear\Component\AbstractRequest();
         
