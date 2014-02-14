@@ -13,17 +13,14 @@ class Router
         $this->registry = $routeTable;
     }
 
-    public function getController($uri)
+    public function getController($uri,$method)
     {
-        $controller = $this->search($uri);
+        $controller = $this->search($uri,$method);
         return $controller;
     }
     
-    public function search($uri)
-    {        
-        // Create Abstract Request Object
-        $abstractRequest = new \Underwear\Component\AbstractRequest();
-    
+    public function search($uri,$method)
+    {            
         // Get The Route Table
         
         $registry = $this->registry;
@@ -46,7 +43,7 @@ class Router
         $args = array();
         foreach ($routeTable as $name=>$route) {
             if ( $this->match($uri, $route->getPath(), $route->getCaseSensitivity()) ) {
-                if (strtolower($route->getMethod()) == strtolower($abtsractRequest->getMethod())) {
+                if (strtolower($route->getMethod()) == strtolower($method)) {
                     $foundRoute = $route;
                     $args = $this->getArgs($uri, $route->getPath());
                     $found = true;

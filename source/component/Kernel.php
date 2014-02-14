@@ -35,10 +35,11 @@ class Kernel
     {
         // Handle the request
         $uri = $abstractRequest->getUri();
+        $method = $abstractRequest->getMethod();
         $routeTable = (include APP_CONFIG_DIRECTORY . DIRECTORY_SEPARATOR . 'routing' . FILE_EXTENSION);
         $router = new \Underwear\Component\Router();
         $router->register($routeTable);
-        $controller = $router->getController($uri);
+        $controller = $router->getController($uri,$method);
         $response = $this->dispatch($controller);
         return $response;
         
