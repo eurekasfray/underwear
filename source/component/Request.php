@@ -4,69 +4,84 @@ namespace Underwear\Component;
 
 class Request
 {
-
-    public static $requestLine;
-    private static $server;
-
-    public static function compose()
+    public $get;
+    public $post;
+    public $server;
+    public $files;
+    public $cookies;
+    public $headers;
+    
+    public function __construct()
     {
-        $server = new \Underwear\Component\ServerGlobals();
-        $request = new Request();
-        $request->requestLine["method"] = $server->server["REQUEST_METHOD"];
-        $request->requestLine["uri"] = $server->server["REQUEST_URI"];
-        $request->requestLine["protocol"] = $server->server["SERVER_PROTOCOL"];
-        $request->requestLine["method"] = $server->server["REQUEST_METHOD"];
-        $request->requestLine["headers"] = array (
-            "accept" => $server->server["HTTP_ACCEPT"],
-            //"accept-charset" => $server->server["HTTP_ACCEPT_CHARSET"],
-            "accept-encoding" => $server->server["HTTP_ACCEPT_ENCODING"],
-            "accept-language" => $server->server["HTTP_ACCEPT_LANGUAGE"],
-            //"accept-datetime" => $server->server["?"],
-            //"authorization" => $server->server[""],
-            //"cache-control" => $server->server[""],
-            "connection" => $server->server["HTTP_CONNECTION"],
-            //"cookie" => $server->server[""],
-            //"content-length" => $server->server[""],
-            //"content-md5" => $server->server[""],
-            //"content-type" => $server->server[""],
-            //"date" => $server->server[""],
-            //"expect" => $server->server[""],
-            //"from" => $server->server[""],
-            "host" => $server->server["HTTP_HOST"],
-            //"if-match" => $server->server[""],
-            //"if-modified-since" => $server->server[""],
-            //"if-none-match" => $server->server[""],
-            //"if-range" => $server->server[""],
-            //"if-unmodified-since" => $server->server[""],
-            //"max-forwards" => $server->server[""],
-            //"origin" => $server->server[""],
-            //"pragma" => $server->server[""],
-            //"proxy-authorization" => $server->server[""],
-            //"range" => $server->server[""],
-            //"referer" => $server->server["HTTP_REFERER"],
-            //"te" => $server->server[""],
-            //"upgrade" => $server->server[""],
-            "user-agent" => $server->server["HTTP_USER_AGENT"],
-            //"via" => $server->server[""],
-            //"warning" => $server->server[""],
-        );
-        return $request;
+        $superglobals= new \Underwear\Component\ServerGlobals();
+        $this->get = $superglobals->createGetGlobal();
+        $this->post = $superglobals->createPostGlobal();
+        $this->server = $superglobals->createServerGlobal();
+        $this->files = $superglobals->createFilesGlobal();
+        $this->cookie = $superglobals->createCookieGlobal();
+        $this->normalizeUri();
+    }
+
+    public function compose()
+    {
+        $abstractRequest = new \Underwear\Component\AbstractRequest();
+        
+        $abstractRequest->setMethod($this->getMethod());
+        $abstractRequest->setUri($this->getNormalizedUri());
+        
+        return $abstractRequest;
         
     }
     
-    public static function getMethod()
+    public function getMethod()
     {
-        $server = new \Underwear\Component\ServerGlobals();
-        return $server->server["REQUEST_METHOD"];
+        return $this->server->get("REQUEST_METHOD");
     }
     
-    public function getUri()
+    public function getRawUri()
     {
-        return $this->requestLine["uri"];
+        return $this->server->get("REQUEST_URI");
+    }
+    
+    public function getNormalizedUri()
+    {
+        return $this->server->get("NORMALIZED_REQUEST_URI");
     }
     
     public function getHeaders()
     {
+    }
+    
+    // Normalize URI by removing fragment and query strings in order for the Router
+    
+    public function normalizeUri()
+    {
+        // Get raw URI
+    
+        $uri = $this->getRawUri();
+        
+        // Get Rid Of Fragment Component (If Any)
+        
+        $indexof = strpos($uri,'#');
+        
+        if ($indexof != false) {
+            $uri = substr($uri,0,$indexof); // remove fragment component
+        }
+        
+        // Get Query String And Remove It From URI In Order To Normalize URI
+        
+        $indexof = strpos($uri,'?');
+        
+        if ($indexof != false) {
+            $queryString = substr($uri, ($indexof+1), (strlen($uri)-1)); // get query string
+            $this->server->add("QUERY_STRING",$queryString); // save query string to SERVER superglobal
+            $uri = substr($uri,0,$indexof);    // remove query string from URI
+            $this->server->add("NORMALIZED_REQUEST_URI",$uri); // save normalized URI to SERVER superglobal
+        }
+        else {
+            // No query string? Then, save URI as is to SERVER superglobal
+            $this->server->add("NORMALIZED_REQUEST_URI",$uri); 
+        }
     }
 
 }
