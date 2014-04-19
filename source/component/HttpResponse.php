@@ -2,7 +2,7 @@
 
 namespace Underwear\Component;
 
-class Response
+class HttpResponse
 {
 
     // TODO: Add getHeaders() method    
@@ -130,11 +130,13 @@ class Response
         self::HTTP_NETWORK_AUTHENTICATION_REQUIRED => "Network Authentication Required",    // RFC 6585
     );
 
-    protected $headers;
-    protected $content;
-    protected $statusCode;
-    protected $statusText;
-    protected $version;
+    private $headers;
+    private $content;
+    private $statusCode;
+    private $statusText;
+    private $version;
+    
+    // This function, upon instantiation of this class, by default, sets the content value to NULL, sets the status to 200 (OK), and sets the headers as a NULL-valued array.
 
     public function __construct($content = "", $status = self::HTTP_OK, $headers = array())
     {
@@ -142,13 +144,10 @@ class Response
         $this->setContent($content);
         $this->setStatusCode($status);
         $this->setStatusText($status);
-        $this->setProtocolVersion("1.0");
+        $this->setProtocolVersion("1.0"); // <--- ??? warning: this value is programmer determined! get the actual version from the server itself, by something kind of $this->getProtocolVersion() method
     }
     
-    public function setHeaders($headers)
-    {
-        $this->headers = $headers;
-    }
+    // Send Headers
     
     public function sendHeaders()
     {
@@ -170,10 +169,14 @@ class Response
         // {do that here!}
     }
     
+    // Send Content
+    
     public function sendContent()
     {
         echo $this->content;
     }
+    
+    // Send Headers and Content
     
     public function send()
     {
@@ -181,25 +184,104 @@ class Response
         $this->sendContent();
     }
     
+    // Set Header
+    
+    public function setHeaders($headers)
+    {
+        $this->headers = $headers;
+    }
+    
+    // Set Response Content
+    
     public function setContent($content)
     {
         $this->content = $content;
     }
+    
+    // Set Protocol Version
     
     public function setProtocolVersion($version)
     {
         $this->version = $version;
     }
     
+    // Set Status Code
+    
     public function setStatusCode($statusCode)
     {
         $this->statusCode = $statusCode;
     }
     
+    // Set Status Text
+    
     public function setStatusText($statusCode)
     {
         $this->statusText = $this->reasons[$statusCode];
     }
+    
+    // 200 - OK
+    
+    public static function ok($content = "", $headers = array())
+    {
+        $response = new \Underwear\Component\HttpResponse($content, self::HTTP_OK, $headers);
+        return $response;
+    }
+    
+    // 304 - Not Modified
+    
+    public static function notModified($content = "", $headers = array())
+    {
+        $response = new \Underwear\Component\HttpResponse($content, self::HTTP_NOT_MODIFIED, $headers);
+        return $response;
+    }
+    
+    // 404 - Not found
+    
+    public static function notFound($content = "", $headers = array())
+    {
+        $response = new \Underwear\Component\HttpResponse($content, self::HTTP_NOT_FOUND, $headers);
+        return $response;
+    }
+    
+    // 403 - Forbidden
+    
+    public static function forbidden($content = "", $headers = array())
+    {
+        $response = new \Underwear\Component\HttpResponse($content, self::HTTP_FORBIDDEN, $headers);
+        return $response;
+    }
+    
+    // 401 - Unauthorized 
+    
+    public static function unauthorized($content = "", $headers = array())
+    {
+        $response = new \Underwear\Component\HttpResponse($content, self::HTTP_UNAUTHORIZED, $headers);
+        return $response;
+    }
+    
+    // 405 - Method Not Allowed
+    
+    public static function notAllowed($content = "", $headers = array())
+    {
+        $response = new \Underwear\Component\HttpResponse($content, self::HTTP_METHOD_NOT_ALLOWED, $headers);
+        return $response;
+    }
+    
+    // 410 - Gone
+    
+    public static function gone($content = "", $headers = array())
+    {
+        $response = new \Underwear\Component\HttpResponse($content, self::HTTP_GONE, $headers);
+        return $response;
+    }
+    
+    // 500 - Internal Server Error
+    
+    public static function serverError($content = "", $headers = array())
+    {
+        $response = new \Underwear\Component\HttpResponse($content, self::HTTP_INTERNAL_SERVER_ERROR, $headers);
+        return $response;
+    }    
     
 }
 

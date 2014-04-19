@@ -2,16 +2,16 @@
 
 namespace Underwear\Component;
 
-class ServerGlobals
+class Globals
 {
 
-    // This is in attempts to isolate the app from globals. Why? Idk.
+    // Is in attempts to isolate the app from PHP globals?
     
     public function __construct()
     {
     }
     
-    public function createGetGlobal()
+    public function createGetBag()
     {
         $get = new \Underwear\Component\Bag();
     
@@ -22,7 +22,7 @@ class ServerGlobals
         return $get;
     }
     
-    public function createPostGlobal()
+    public function createPostBag()
     {
         $post = new \Underwear\Component\Bag();
     
@@ -33,7 +33,7 @@ class ServerGlobals
         return $post;
     }
     
-    public function createServerGlobal()
+    public function createServerBag()
     {
         $server = new \Underwear\Component\Bag();
     
@@ -44,7 +44,7 @@ class ServerGlobals
         return $server;
     }
     
-    public function createFilesGlobal()
+    public function createFilesBag()
     {
         $files = new \Underwear\Component\Bag();
     
@@ -55,7 +55,7 @@ class ServerGlobals
         return $files;
     }
     
-    public function createCookieGlobal()
+    public function createCookieBag()
     {
         $cookie = new \Underwear\Component\Bag();
     
@@ -64,6 +64,17 @@ class ServerGlobals
         }
         
         return $cookie;
+    }
+    
+    public function createHeadersBag()
+    {
+        $headers = new \Underwear\Component\Bag();
+    
+        foreach ($_GET as $key=>$value) {
+            $headers->add($key,$value);
+        }
+        
+        return $headers;
     }
 
 }
