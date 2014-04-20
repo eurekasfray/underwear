@@ -22,7 +22,7 @@ class Bag
             return $this->collection[$key];
         }
         else {
-            return false;
+            return null;
         }
     }
     
@@ -41,12 +41,12 @@ class Bag
     {
     }
     
-    public function has($itemKey)
+    public function has($key)
     {
         $found = false;
     
-        foreach ($this->collection as $key=>$value) {
-            if ($itemKey == $key) {
+        foreach ($this->collection as $index=>$value) {
+            if ($key == $index) {
                 $found = true;
                 break;
             }
