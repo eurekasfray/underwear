@@ -1,0 +1,25 @@
+
+        Last revised: 2014-04-19
+        
+--------------------------------------------------------------------------------
+        Error Handling
+--------------------------------------------------------------------------------
+
+The following for the moment refers to error handling in the scope of the
+handling errors returned by functions and routines. For example, when a key is
+searched for by a function, the value returned by the function will either
+indicate error or success. The question is, how is error or success to be
+indicated by the function?
+
+The primary concern for now is this: how do I implement a system of
+error/success/warning return values?
+
+The following is a system for error/success/warning return values:
+
+    -- values less than zero indicates error.
+    -- values greater than zero indicate success
+    -- zero indicates warning
+    
+In the context of PHP, where return values can be of various (i.e., one function
+can return either an integer value, a string or array), will the outcome
+indicator be of the same system mentioned above.

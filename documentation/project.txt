@@ -3,12 +3,8 @@ PROJECT OVERVIEW
 ======================================================================
 
 Name:           Underwear
-Description:    A PHP Model-View-Controller (MVC) Framework
+Description:    A MVC-inspired PHP Framework
 Date started:   November 2, 2013
 Author(s):      eurekasfray
 
 Goals:          To develop a simple MVC-inspired framework
-
-======================================================================
-HISTORY
-======================================================================

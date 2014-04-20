@@ -1,0 +1,7 @@
+- 
+- use 4 spaces for indention. never use tabs (or else ...)
+- CamelCase case convention
+- meaningful method names
+- short, meaningful, descriptive variable names
+- data encapsulation
+- modularity

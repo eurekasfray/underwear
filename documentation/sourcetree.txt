@@ -1,0 +1,56 @@
+        
+        Last revised: 2014-04-19
+
+--------------------------------------------------------------------------------
+        Source Tree Layout
+--------------------------------------------------------------------------------
+
+Making a note of the source-tree layout of this framework is very important,
+because the layout of the source directory is an essential part of the structure
+of the framework.
+
+The list below shows the organization of source directory, and provides
+additional information that describes the purpose of each directory.
+
+
+/app
+ 
+        The directory for the web application (abbreviated: app).
+        This directory contains the app's files, such as controllers,
+        web page templates and configurations. This is the directory
+        in which the app developer will be most busy while developing
+        their app.
+ 
+/app/config
+    
+        This is the directory for all app configurations files.
+        The directory contains application configurations.
+ 
+/app/controller
+    
+        This directory contains all the application controllers.
+ 
+/app/template
+    
+        This directory contains the template files.
+ 
+/component
+ 
+        This directory contains framework components.
+ 
+/core
+    
+        This directory contains framework core component.
+ 
+/include
+ 
+        Helpful files used to assist the framework, but are not a part
+        of the framework's architecture.
+ 
+/service
+ 
+        Framework services that can be used by the application.
+ 
+/web
+ 
+        Contains the front controller and can contain public files.
