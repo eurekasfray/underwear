@@ -1,6 +1,6 @@
 <?php
 
-namespace Underwear\Component;
+namespace Underwear\Core;
 
 class Loader
 {
