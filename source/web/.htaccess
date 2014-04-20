@@ -1,15 +1,15 @@
-# Let the root directory be the rewrite base
-RewriteBase /
-
 # Let the front controller be the directory index
 DirectoryIndex app.php
 
 # Turn on the rewrite engine
 RewriteEngine On
 
+# Let the root directory be the rewrite base
+RewriteBase /
+
 # Display existing files and directories
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Rewrite any other request to the font controller
+# Rewrite any other request to the front controller
 RewriteRule .* app.php/$0 [PT,L]
