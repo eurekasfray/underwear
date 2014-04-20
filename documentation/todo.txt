@@ -1,15 +1,124 @@
 TODO
 
--- Spell check texts that are displayed, like error messages, http status text, etc.
--- rename $controller to something else; im talking about the $controller variable name, the one that is returned by the router. rename it because it's name is confusing when used along with what is an actual controller.
--- Find out how 404 errors are handled. Apparently, errors are handled by the framework
--- What about an error handler that handles errors like 404? I think I need an error handler to handle that sort of stuff. I also need an error controller than prepares a text and template and renders the error page.
--- System Exception: How does the system report errors? Upon an error, the error is reported via a response. So in essence the system hijacks the response for which the request asked with its own 500-internal-error response. I believe that all system errors must be caught before the server has a chance to responds to the browser's request. This way, system response will take precedence over the server's response to the browser's request.
+- source code
+        - Rename the $controller variable to something else.                        ignored, chose alternative solution
+          $controller stores the controller information (class, method,
+          and arguments) returned by $router->search(). Rename $controller
+          because its name is confusing when used along with what
+          is an actual controller. Perhaps a name like "$controllerInfo"
+          is better.
+        - Let controller info returned by the router become an object. So           done, alternative solution
+          instead of returning an array, a Controller object is returned.
+          This seems much more cleaner than using an array
+        - rewrite HttpRequest object better. Rather than the hack job               almost done
+          that you currently have, treat HttpRequest like an actual request
+          in an object-oriented sense. A request has properties (uri, method,
+          get, post, cookies, files, etc.); and it can do stuff and stuff
+          can be done to it---those are the methods. Let get, post, files
+          and cookie properties of the http request be bag data type objects.
+        - Add to the Loader object this: allow the router to load all classes
+          within the app's controller folder. This will allow the app to have
+          access to all of its controllers. On a similar but separate idea,
+          allow the app to be able to load only the classes it feels
+          are necessary. Perhaps a simple loadClass() method can work.
+        - Try enforcing more data encapsulation in objects, where the only way
+          to get to the data in the objects is through a method. This allows
+          for more modularity. The only interface to data should be through
+          a method. Keyword here is more modularity among objects.
+          
+- documentation
+        - sigh
+        - add meaningful and clear explanations to source code                      on going
 
-DONE
+- cleanup
+        - Spell check texts that are displayed, such as error messages,
+          HTTP status text, etc.
+   
+- error handling
+        - System Exception: How does the system report errors?
+          Upon an error, the error is reported via a response. So in essence
+          the system hijacks the response for which the request asked
+          with its own 500-internal-error response. I believe that
+          all system errors must be caught before the app has
+          a chance to respond to the browser's request. This way,
+          system responses will take precedence over the app's responses.
+        - What about an error handler that handles errors like 404?
+          I think I need an error handler to handle that sort of stuff.
+          I also need an error controller than prepares a text and template
+          and renders the error page.
+        - Find out how 404 errors are handled. Apparently, errors are
+          handled by the framework. In fact, the framework is responsible
+          for handling all responses.
+   
+- routing
+        - Should I use JSON as the routing config file for the replacement
+          of 'routing.php'? The PHP code is harder to read that JSON which
+          is way easier. But then again, if I were to use JSON I would want
+          to impelement the JSON parser and so on, because I like to
+          challenge myself to solve problem. However, with this foolish notion,
+          I may mess up the JSON and make it harder to us. So, now I can
+          consider myself stuck in a dilemma.
+        - create the route parser in router->search()                               done
+        - improve route path capabilities: (1) should be able to use
+          placeholders in different places; (2) regex?
 
--- renamed namespace for most components. let all components sit under the namespace "{FrameworkName}\Component", rather than "{FrameworkName}\Component\{ComponentName}"
--- I think the response and requests should be static as there can only be one request and response per script execution
--- Designed and developed the views
--- Created the route parser in router->search
--- The app routing config now loads properly
+- implement simple template engine
+        - have object data type ?
+        - have collection data type (eg. array) ?
+        - have expression  ?
+        - for/while/if/foreach constructs ?
+        - variables ?
+        - variable assignment ?
+        - file inclusion (translucency) ?
+        - functions/routines ?
+        - abstract necessary constructs of PHP that are typically used
+          for doing templates ?
+
+- implement simple template engine
+        - design and develop simple template renderer                               done
+
+- implement simple cache system
+        - a way to save page as a cache object
+        - a way to save page for a specified time
+        - a way to save entire page, in order to reduce respond time by saving the generated page. This reduces the time taken to get data from database, and time it takes the template engine to render a template
+
+- implement dynamic cache system 
+        - save only certain parts of the page, and only load data/information that is needed
+
+- miscellaneous
+        - renamed namespace for most components. let all components                 done
+          sit under the namespace "{FrameworkName}\Component",
+          rather than "{FrameworkName}\Component\{ComponentName}"   
+        - I think the response and requests should be static as there               done
+          can only be one request and response per script execution (I assumed).          
+        - allow the app routing config to be properly loaded                        done
+        - Let Kernel->shutdown contain a die() command to kill the server,
+          allowing Kernel->shutdown() to be executed in a system exception
+          upon an error so that the app can be stopped from being executed.
+        - add a "Client" and "Server" service objects. These objects                
+          shall contain client and server info, respectively.
+          These objects may be useful to the application when needed.
+          For example, the application may need to know what operating
+          system that the server uses; the application can just instantiate
+          the Client object and use the, say, getOS() method. Or, in another
+          example, the application may need to know what browser
+          the client is, whether it is Firefox or Chrome.
+        - what about special characters in URI, such as "/name/john%20doe"
+          which when rendered is "/name/john doe" a text with space?
+          Should those special characters be acceptable in the route path,
+          so that a route with path "/name/john%20doe" can be recornized as
+          "/name/john doe" a text with space?
+        - what about callbacks? Can we have controller callbacks,
+          that when, say the HomepageController after its execution,
+          the CelebrateController is automatically called.
+          Will that be necessary?
+        - implement unbiased directory structure. (add more info about this here)
+        - add simple methods for returning typicallay used responses, like
+          ok() for a 200 message, notfound() for a 404 message.
+        - how do I deal with the normalization of the URI path upon the instantiation of an HttpRequest object, separate from when the Route object in search attempts to normalize the route path? should the normalization process be one standard process---or in other words---a separate method in a class named the "PathNormalizer"? ... I think so ... But the problem is that the framework will be imposing normalization rules onto the programmer's decisions in his choice of route path. shouldn't the framework be unrestrictive? well, i guess not; for now, the framework can be a bit restrictive until i figure the rest of the way out.
+        - should Kernel->dispatch() be responsible for checking to see
+          a controller was found or not by the router?
+        - should the query string be collected and added to the HttpRequest
+          as a property. Example: 'HttpRequest->queryString'
+        - should I turn the framework config into an object? (if so, all
+          things should be static).
