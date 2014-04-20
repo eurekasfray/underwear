@@ -42,7 +42,7 @@ class View
     public function render($file, array $args)
     {
         // This method should return a string because its return will be passed on to the Response as content
-        // The rendering process does not involve displaying code, but instead means to simply render the template with its fill-in information.
+        // The rendering process does not involve displaying code, but instead means to simply render the template, complete with its fill-in information.
         
         extract($args);
         ob_start();
