@@ -1,6 +1,6 @@
 <?php
 
-namespace Underwear\Component;
+namespace Underwear\Core;
 
 class Route
 {
@@ -11,13 +11,26 @@ class Route
     private $method;
     private $caseSensitivity;
 
-    public function __construct($path, $controller, $action, $method, $caseSensitivity = CASE_INSENSITIVE)
+    public function __construct($method, $path, $controller, $action, $caseSensitivity = CASE_INSENSITIVE)
     {
-        $this->setPath($path);
+        // Note: The route paths are normalized upon the creation of a Route object.
+        
+        $normalizer = new \Underwear\Core\Normalizer();
+        $this->setmethod($method);
+        $this->setPath($normalizer->normalizePath($path));
         $this->setController($controller);
         $this->setAction($action);
-        $this->setmethod($method);
         $this->setCaseSensitivity($caseSensitivity);
+    }
+    
+    private function setMethod($method)
+    {
+        $this->method = $method;
+    }
+    
+    public function getMethod()
+    {
+        return $this->method;
     }
     
     private function setPath($path)
@@ -48,16 +61,6 @@ class Route
     public function getAction()
     {
         return $this->action;
-    }
-    
-    private function setMethod($method)
-    {
-        $this->method = $method;
-    }
-    
-    public function getMethod()
-    {
-        return $this->method;
     }
 
     private function setCaseSensitivity($caseSensitivity)
